@@ -5,6 +5,7 @@ from typing import *
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
+from models.screenshot import Screenshot
 
 
 logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ class EmailHtmlMessage:
         self.smtp_user = smtp_user
         self.smtp_pass = smtp_pass
 
-    def send_email(self, receipient : str, sender : str, subject : str, html : str, images : Optional[Iterable[Dict[str, str]]] = {}) -> None:
+    def send_email(self, receipient : str, sender : str, subject : str, html : str, images : Iterable[Screenshot] = []) -> None:
 
         logger.info('Building email message')
 
@@ -31,9 +32,9 @@ class EmailHtmlMessage:
         message.attach(part)
 
         logger.info("Attaching inline images")
-        for x, image in enumerate(images):
-            msgImage = MIMEImage(base64.decodebytes(image['b64png'].encode()))
-            msgImage.add_header('Content-ID', f'<{image["cid"]}>')
+        for image in images:
+            msgImage = MIMEImage(base64.decodebytes(image.b64png.encode()))
+            msgImage.add_header('Content-ID', f'<{image.cid}>')
             message.attach(msgImage)
 
         logger.info('Sending email')

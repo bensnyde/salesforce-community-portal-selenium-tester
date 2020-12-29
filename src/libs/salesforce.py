@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
+from models.screenshot import Screenshot
 from settings import Settings
 
 
@@ -79,7 +80,7 @@ class SalesforceCommunityPortalSeleniumTester:
 
         logger.info('Logged into Community Portal')
 
-    def collect_screenshot_from_community_portal(self, url: str, wait_time : int = conf.SELENIUM_WAIT_TIME) -> Dict[str, str]:
+    def collect_screenshot_from_community_portal(self, url: str, wait_time : int = conf.SELENIUM_WAIT_TIME) -> Screenshot:
 
         logger.info(f'Collecting screenshot from {url}')
 
@@ -91,13 +92,10 @@ class SalesforceCommunityPortalSeleniumTester:
         
         logger.info('Collected screenshot')
 
-        return {
-            'url': url, 
-            'b64png': ss, 
-            'cid': str(uuid.uuid4())
-        }
+        return Screenshot(url=url, b64png=ss, cid=str(uuid.uuid4()))
 
-    def get_screenshots(self) -> List[Dict[str, str]]:
+
+    def get_screenshots(self) -> List[Screenshot]:
 
         self.login_to_salesforce_portal()
         self.login_to_community_portal()
