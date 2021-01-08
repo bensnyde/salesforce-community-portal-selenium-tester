@@ -19,7 +19,7 @@ class EmailHtmlMessage:
         self.smtp_user = smtp_user
         self.smtp_pass = smtp_pass
 
-    def send_email(self, receipients : List[str], sender : str, subject : str, html : str, images : Iterable[Screenshot] = []) -> None:
+    def send_email(self, receipients : Iterable[str], sender : str, subject : str, html : str, images : Iterable[Screenshot] = []) -> None:
 
         logger.info('Building email message')
 
