@@ -19,14 +19,14 @@ class EmailHtmlMessage:
         self.smtp_user = smtp_user
         self.smtp_pass = smtp_pass
 
-    def send_email(self, receipient : str, sender : str, subject : str, html : str, images : Iterable[Screenshot] = []) -> None:
+    def send_email(self, receipients : List[str], sender : str, subject : str, html : str, images : Iterable[Screenshot] = []) -> None:
 
         logger.info('Building email message')
 
         message = MIMEMultipart("alternative")
         message["Subject"] = subject
         message["From"] = sender
-        message["To"] = receipient
+        message["To"] = ", ".join(receipients)
 
         part = MIMEText(html, "html")
         message.attach(part)
@@ -44,7 +44,7 @@ class EmailHtmlMessage:
             if self.smtp_user and self.smtp_pass:
                 server.login(self.smtp_user, self.smtp_pass)
 
-            server.sendmail(sender, receipient, message.as_string())
+            server.sendmail(sender, receipients, message.as_string())
 
         logger.info('Email sent')
 

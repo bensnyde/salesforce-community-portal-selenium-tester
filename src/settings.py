@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     SELENIUM_HUB_URL : HttpUrl
     SELENIUM_WAIT_TIME : int  
 
-    EMAIL_TO : str
+    EMAIL_TO : List[str]
     EMAIL_FROM : str
     EMAIL_SUBJECT : str
     EMAIL_TEMPLATE: str
